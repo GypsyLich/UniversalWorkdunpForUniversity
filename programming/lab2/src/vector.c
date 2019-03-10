@@ -61,9 +61,6 @@ int vector_resize(vector *v, size_t new_size) {
         memset(&v->data[v->size], 0, sizeof(int) * (v->capacity - 1));
         v->size = new_size;
         return 0;
-        /*for (size_t i = v->size + 1; i = new_size; ++i) {
-            vector_push_back(v, 0);
-        }*/
     }
     return -1;
 }
@@ -87,7 +84,7 @@ void vector_set_item(vector *v, size_t index, int e) {
 
 int vector_get_item(vector *v, size_t index) {
     if (index >= v->size) {
-        return -1;
+        return 0;
     }
 
     return v->data[index];

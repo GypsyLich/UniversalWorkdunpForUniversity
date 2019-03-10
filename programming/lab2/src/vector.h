@@ -10,6 +10,7 @@ typedef struct vector_ {
 } vector;
 
 vector *vector_init(size_t initial_capacity);
+vector *vector_copy(const vector *v);
 size_t vector_get_size(vector *);
 size_t vector_get_capacity(vector *v);
 void vector_shrink_to_fit(vector *v);
