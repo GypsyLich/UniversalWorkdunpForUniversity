@@ -15,7 +15,7 @@ set format y "%.4f"
 set xlabel "Number of elements"
 set format x "%3.0f" 
 set ylabel "Execution time (sec)"
-set xtics 10000
+set xtics 25000
 set ytics 0.1
 set rmargin 4
 set tmargin 2

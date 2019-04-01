@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define N 100000
+#define N 300000
 
 void renewer(int *arr, int *newArr) {
     for (int i = 0; i < N; ++i) {
@@ -18,14 +18,14 @@ int main() {
     int arr[N];
     int arrToSort[N];
     for (int i = 0; i < N; ++i) {
-        arr[i] = getrand(0, 100000);
+        arr[i] = getrand(0, 1000000);
     }
-    int size = (sizeof(arr) / sizeof(arr[0])) / 100;
+    int size = (sizeof(arr) / sizeof(arr[0])) / 12;
     FILE *fp;
     double start, end;
     fp = fopen("rad.dat", "w+");
-    for (int i = 1; i * 4 <= 100; ++i) {
-        int sizet = i * 4 * size;
+    for (int i = 1; i <= 11; ++i) {
+        int sizet = i * size + size;
         start = wtime();
         renewer(arr, arrToSort);
         radixSort(arrToSort, sizet);
@@ -35,8 +35,8 @@ int main() {
     }
     fclose(fp);
     fp = fopen("oddEven.dat", "w+");
-    for (int i = 1; i * 4 <= 100; ++i) {
-        int sizet = i * 4 * size;
+    for (int i = 1; i <= 11; ++i) {
+        int sizet = i * size + size;
         start = wtime();
         renewer(arr, arrToSort);
         oddEvenSort(arrToSort, sizet);
@@ -46,8 +46,8 @@ int main() {
     }
     fclose(fp);
     fp = fopen("merge.dat", "w+");
-    for (int i = 1; i * 4 <= 100; ++i) {
-        int sizet = i * 4 * size;
+    for (int i = 1; i <= 11; ++i) {
+        int sizet = i * size + size;
         start = wtime();
         renewer(arr, arrToSort);
         mergeSort(arr, 0, sizet);

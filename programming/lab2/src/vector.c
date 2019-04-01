@@ -9,6 +9,10 @@ vector *vector_init(size_t initial_capacity) {
     if (v != NULL) {
         if (initial_capacity > 0) {
             v->data = malloc(sizeof(int) * initial_capacity);
+            if (v->data == NULL) {
+                free(v);
+                return NULL;
+            }
             memset(v->data, '\0', sizeof(int) * initial_capacity);
             v->size = 0;
             v->capacity = initial_capacity;
@@ -57,7 +61,7 @@ void vector_shrink_to_fit(vector *v) {
 
 int vector_resize(vector *v, size_t new_size) {
     if (v->size < new_size) {
-        v->capacity = new_size;
+        vector_reserve(v, new_size);
         memset(&v->data[v->size], 0, sizeof(int) * (v->capacity - 1));
         v->size = new_size;
         return 0;
