@@ -1,16 +1,9 @@
+#include "bstree.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-struct bstree {
-    char *key;
-    int *value;
-
-    struct bstree *left;
-    struct bstree *right;
-};
-
-struct bstree *bstree_create(char *key, int *value) {
+struct bstree *bstree_create(char *key, int value) {
     struct bstree *node;
 
     node = malloc(sizeof(*node));
@@ -23,16 +16,17 @@ struct bstree *bstree_create(char *key, int *value) {
     return node;
 }
 
-void bstree_add(struct bstree *tree, char *key, int *value) {
+void bstree_add(struct bstree *tree, char *key, int value) {
     if (tree == NULL)
         return;
-    struct bstree *parent, *node;
-    while (tree != NULL) {
-        parent = tree;
-        if (strcmp(key, tree->key) < 0)
-            tree = tree->left;
-        else if (strcmp(key, tree->key) > 0)
-            tree = tree->right;
+    struct bstree *parent, *CurrentTree, *node;
+    CurrentTree = tree;
+    while (CurrentTree != NULL) {
+        parent = CurrentTree;
+        if (strcmp(key, CurrentTree->key) < 0)
+            CurrentTree = CurrentTree->left;
+        else if (strcmp(key, CurrentTree->key) > 0)
+            CurrentTree = CurrentTree->right;
         else
             return;
     }
@@ -43,59 +37,64 @@ void bstree_add(struct bstree *tree, char *key, int *value) {
         parent->right = node;
 }
 struct bstree *bstree_lookup(struct bstree *tree, char *key) {
-    while (tree != NULL) {
-        if (strcmp(key, tree->key) == 0)
-            return tree;
-        else if (strcmp(key, tree->key) < 0)
-            tree = tree->left;
-        else
-            tree = tree->right;
+    struct bstree *CurrentTree;
+    CurrentTree = tree;
+    while (CurrentTree != NULL) {
+        if (strcmp(key, CurrentTree->key) == 0) {
+            return CurrentTree;
+        } else if (strcmp(key, CurrentTree->key) < 0) {
+            CurrentTree = CurrentTree->left;
+        } else {
+            CurrentTree = CurrentTree->right;
+        }
     }
-    return tree;
+    return CurrentTree;
 }
 
 struct bstree *bstree_min(struct bstree *tree) {
     if (tree == NULL)
         return NULL;
+    struct bstree *CurrentTree;
+    CurrentTree = tree;
 
-    while (tree->left != NULL)
-        tree = tree->left;
-    return tree;
+    while (CurrentTree->left != NULL)
+        CurrentTree = CurrentTree->left;
+    return CurrentTree;
 }
 
 struct bstree *bstree_max(struct bstree *tree) {
     if (tree == NULL)
         return NULL;
+    struct bstree *CurrentTree;
+    CurrentTree = tree;
 
-    while (tree->right != NULL)
-        tree = tree->right;
-    return tree;
+    while (CurrentTree->right != NULL)
+        CurrentTree = CurrentTree->right;
+    return CurrentTree;
 }
 
 struct bstree *bstree_delete(struct bstree *tree, char *key) {
-    if (tree == NULL)
-        return tree;
 
-    if (strcmp(key, tree->key) < 0) {
-        tree->left = bstree_delete(tree->left, key);
-    } else if (key > tree->key) {
-        tree->right = bstree_delete(tree->right, key);
-    } else {
-        if (tree->left == NULL) {
-            struct bstree *temp = tree->right;
-            free(tree);
-            return temp;
-        } else if (tree->right == NULL) {
-            struct bstree *temp = tree->left;
-            free(tree);
-            return temp;
-        }
+    struct bstree *CurrentTree;
+    CurrentTree = bstree_lookup(tree, key);
 
-        struct bstree *temp = bstree_min(tree->right);
+    if (CurrentTree == NULL)
+        return CurrentTree;
 
-        tree->key = temp->key;
-
-        tree->right = bstree_delete(tree->right, temp->key);
+    if (CurrentTree->left == NULL) {
+        CurrentTree = CurrentTree->right;
+        free(CurrentTree->right);
+        return CurrentTree;
+    } else if (CurrentTree->right == NULL) {
+        CurrentTree = CurrentTree->left;
+        free(CurrentTree->left);
+        return CurrentTree;
     }
+
+    struct bstree *temp = bstree_min(CurrentTree->right);
+
+    CurrentTree->key = temp->key;
+
+    bstree_delete(tree->right, temp->key);
     return tree;
 }

@@ -56,14 +56,26 @@ int main() {
     FILE *compressed;
     compressed = fopen("compressed.dat", "w");
     int i;
+    uint32_t number;
+    uint8_t *buf = (uint8_t *)malloc(sizeof(uint8_t) * 256);
+    const uint8_t **bufp = *buf;
     for (i = 0; i < 10; i++) {
-        uint32_t number = generate_number();
+        number = generate_number();
         fprintf(uncompressed, "%d ", number);
         printf("%4d %d \n", number, i);
-        uint8_t *buf = number;
         encode_varint(number, buf);
         fprintf(compressed, "%d ", *buf);
-        printf("%4d\n", *buf);
+        printf("%4d %4d\n", number, *buf);
+    }
+    for (int i = 0; i < 10; ++i) {
+
+        fscanf(compressed, "%ls ", bufp);
+        fscanf(uncompressed, "%d ", &number);
+        decode_varint(bufp);
+        printf("%s\n", *bufp);
+        if (**bufp == number) {
+            printf("pass\n");
+        }
     }
     return 0;
 }

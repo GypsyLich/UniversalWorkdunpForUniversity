@@ -1,0 +1,72 @@
+
+size_t slen(const char *s) {
+    const char *sc = s;
+    while (*sc != '\0') {
+        ++sc;
+    }
+    return sc - s;
+}
+
+char *stok(char **s, const char *ct) {
+    char *sbegin = *s;
+    char *end;
+    /*    const char *sc1, *sc2;
+
+        if (sbegin == NULL) {
+            return NULL;
+        }
+
+        for (sc1 = sbegin; *sc1 != '\0'; ++sc1) {
+            for (sc2 = ct; *sc2 != '\0'; ++sc2) {
+                if (*sc1 == *sc2)
+                    return (char *)sc1;
+            }
+        }
+        end = strpbrk(sbegin, ct);
+        if (end)
+            *end++ = '\0';
+        *s = end;
+    */
+    return sbegin;
+}
+
+int scmp(const char *cs, const char *ct) {
+    char c1, c2;
+
+    while (1) {
+        c1 = *cs++;
+        c2 = *ct++;
+        if (c1 != c2) {
+            return c1 < c2 ? -1 : 1;
+        }
+        if (!c1) {
+            break;
+        }
+    }
+    return 0;
+}
+
+size_t sspn(const char *string, const char *reject) {
+    const char *p;
+    const char *r;
+    size_t count = 0;
+
+    for (p = string; *p != '\0'; ++p) {
+        for (r = reject; *r != '\0'; ++r) {
+            if (*p == *r) {
+                return count;
+            }
+        }
+        ++count;
+    }
+    return count;
+}
+
+char *scpy(char *destination, const char *src) {
+    char *temp = destination;
+
+    while (src != '\0') {
+        *destination++ = *src++;
+    }
+    return temp;
+}
