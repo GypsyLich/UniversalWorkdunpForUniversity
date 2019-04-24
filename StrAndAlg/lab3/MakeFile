@@ -1,0 +1,7 @@
+all:
+	gcc -Wall -c src/recursive.c -s objFiles/recursive.o
+	gcc -Wall -c src/iterative.c -s objFiles/iterative.o
+	gcc -Wall -c src/recursive.c -o objFiles/recursive.o
+	gcc -Wall -c src/iterative.c -o objFiles/iterative.o
+	gcc -Wall -c src/main.c -o objFiles/main.o
+	gcc objFiles/recursive.o objFiles/iterative.o objFiles/main.o -o program
